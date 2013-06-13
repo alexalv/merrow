@@ -1,0 +1,2 @@
+module VmconfigsHelper
+end

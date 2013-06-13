@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Aineui</title>
+  <%= stylesheet_link_tag    "application", :media => "all" %>
+  <%= javascript_include_tag "application" %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+
+<div class="navbar">  
+  <div class="navbar-inner">  
+    <div class="container">
+    	<ul class ="nav pull-left">
+    		<% if can? :manage, VirtualMachine %>
+          <li><%= link_to "VM's", :virtual_machines%></li>
+        <%end%>
+    		<% if can? :manage, :all %>
+          <li><%= link_to "VM Configs", :vmconfigs%></li>
+      		<li><%= link_to "Servers", :servers%></li>
+      		<li><%= link_to "Os Images", :os_images%></li>
+      		<li><%= link_to "Users", :users%></li>
+    		<% end %>
+    	</ul>  
+    	<ul class="nav pull-right">
+		<% if current_user %>
+			<li><%= link_to "Edit Profile", edit_user_path(current_user.id)%></li>
+			<li><%= link_to "Logout", :logout%></li>
+		<% else %>
+			<li><%= link_to "Register", new_user_path%></li>
+			<li><%= link_to "Login", :login %></li>
+		<% end %>
+		</ul>
+	</div>
+  </div>
+</div>
+
+<div class="span12">
+	<%= yield %>
+</div>
+
+</body>
+</html>
