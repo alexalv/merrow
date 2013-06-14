@@ -29,10 +29,15 @@
         <td><%= virtual_machine.image %></td>
         <td><%= virtual_machine.connection_s %></td>
         <td>
-          
-          <%= link_to t('.save', :default => t("helpers.links.save")),
+          <% if can? :edit, VirtualMachine %>
+            <% if virtual_machine.state == "running" %>
+              <%= link_to t('.save', :default => t("helpers.links.save")),
                       "/virtual_machines/save/#{virtual_machine.id}", :class => 'btn btn-mini' %>
-          
+            <%elsif virtual_machine.state == "saved"%>
+              <%= link_to t('.start', :default => t("helpers.links.start")),
+                      "/virtual_machines/start/#{virtual_machine.id}", :class => 'btn btn-mini' %>
+            <%end%>
+          <%end%>
           <% if can? :destroy, VirtualMachine %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       virtual_machine_path(virtual_machine),

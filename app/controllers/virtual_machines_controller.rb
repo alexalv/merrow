@@ -69,9 +69,6 @@ class VirtualMachinesController < ApplicationController
 
   def save
     @virtual_machine = VirtualMachine.find(params[:id])
-    puts params[:id]
-    puts "AAAAAAAAAAAAAAAAAAAA"
-    puts @virtual_machine.server_id
     @serv = Server.find(@virtual_machine.server_id)
     @msg = {}
     @msg[:action] = "SAVE"
@@ -83,6 +80,19 @@ class VirtualMachinesController < ApplicationController
     redirect_to :action => "index"
   end
 
+  def start
+    @virtual_machine = VirtualMachine.find(params[:id])
+    @serv = Server.find(@virtual_machine.server_id)
+    @msg = {}
+    @msg[:action] = "SAVEDSTART"
+    @msg[:params] = {}
+    @msg[:params][:uuid] = @virtual_machine.uuid
+    @msg[:params][:server_uuid] = @serv.key
+    @msg[:params][:user_id] = @virtual_machine.user_id.to_s
+    @msg[:params][:filename] = @virtual_machine.filename
+    VirtualMachinesController.nameless_exchange.publish @msg.to_json,:key => "ui.to.mng"
+    redirect_to :action => "index"
+  end
   # PUT /virtual_machines/1
   # PUT /virtual_machines/1.json
   def update

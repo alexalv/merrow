@@ -57,7 +57,7 @@ Daemons.run_proc('mng_recv', {}) do
         when 'SAVED'
           ActiveRecord::Base.connection_pool.with_connection do
             @virtual_machine = VirtualMachine.where("uuid = ?", obj['params']['uuid'])
-            @virtual_machine.update_attributes({:state => "saved"})
+            @virtual_machine.update_attributes({:state => "saved", :filename =>obj['params']['filename']})
           end
         when 'STOPPED'
           ActiveRecord::Base.connection_pool.with_connection do
