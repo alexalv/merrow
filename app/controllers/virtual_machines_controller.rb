@@ -37,12 +37,15 @@ class VirtualMachinesController < ApplicationController
   # GET /virtual_machines/1/edit
   def edit
     @os_images = OsImage.all
+    @vmconfigs = Vmconfig.all
     @virtual_machine = VirtualMachine.find(params[:id])
   end
 
   # POST /virtual_machines
   # POST /virtual_machines.json
   def create
+    @vmconfigs = Vmconfig.all
+    @os_images = OsImage.all
     params[:virtual_machine][:connection_s]="vnc to 217.197.0.127:5901"
     params[:virtual_machine][:user_id] = current_user.id
     @virtual_machine = VirtualMachine.new(params[:virtual_machine])
