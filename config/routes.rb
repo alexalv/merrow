@@ -8,7 +8,7 @@ Aineui::Application.routes.draw do
   resources :vm_configs
 
 
-  root :to => 'virtual_machines#index'
+  root :to => 'user_sessions#new'
   
   resources :users
 
