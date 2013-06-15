@@ -36,6 +36,12 @@
 </div>
 
 <div class="span12">
+  <% flash.each do |name,msg|%>
+    <div class="alert alert-<%= name == :notice ? "success" : "error"%>">
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+      <%= msg %>
+    </div>
+  <%end%>
 	<%= yield %>
 </div>
 
