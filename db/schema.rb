@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130614050702) do
+ActiveRecord::Schema.define(:version => 20130615204956) do
 
   create_table "os_images", :force => true do |t|
     t.string   "system"
@@ -61,7 +61,6 @@ ActiveRecord::Schema.define(:version => 20130614050702) do
     t.string   "macaddr"
     t.datetime "created_at",   :null => false
     t.datetime "updated_at",   :null => false
-    t.string   "image"
     t.string   "connection_s"
     t.integer  "user_id"
     t.string   "state"
@@ -69,6 +68,7 @@ ActiveRecord::Schema.define(:version => 20130614050702) do
     t.string   "uuid"
     t.integer  "server_id"
     t.string   "filename"
+    t.integer  "os_image_id"
   end
 
   create_table "vm_configs", :force => true do |t|

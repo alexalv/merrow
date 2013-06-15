@@ -1,39 +1,17 @@
-<%= form_for @virtual_machine, :html => { :class => 'form-horizontal' } do |f| %>
-   <div class="control-group">
-    <%= f.label :name, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :name, :class => 'text_field' %>
-    </div>
-  </div>
-  <div class="control-group">
-    <%= f.label :description, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_area :description, :class => 'text_area' %>
-    </div>
-  </div>
-  <div class="control-group">
-    <%= f.label :vmconfig_id, :class => 'control-label' %>
-    <div class="controls">
-      <%= collection_select(:virtual_machine, :vmconfig_id, @vmconfigs, :id, :name, options ={:prompt => "-Select configuration"}, :class =>"category")%>
-    </div>
-  </div>
- 
-  <div class="control-group">
-    <%= f.label :macaddr, :class => 'control-label' %>
-    <div class="controls">
-      <%= f.text_field :macaddr, :class => 'text_field' %>
-    </div>
-  </div>
-  <div class="control-group">
-    <%= f.label :image, :class => 'control-label' %>
-    <div class="controls">
-      <%= collection_select(:virtual_machine, :image, @os_images, :file, :system, options ={:prompt => "-Select an image"}, :class =>"category")%>
-    </div>
-  </div>
+<%= simple_form_for @virtual_machine, :html => { :class => 'form-horizontal' } do |f| %>
+
+  <%= f.input :name %>
+
+  <%= f.association :vmconfig %>
+
+  <%= f.association :os_image, label_method: :system, value_method: :id %>
+
+  <%= f.input :description %>
 
   <div class="form-actions">
     <%= f.submit nil, :class => 'btn btn-primary' %>
     <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 virtual_machines_path, :class => 'btn' %>
   </div>
+
 <% end %>

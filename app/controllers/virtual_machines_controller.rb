@@ -44,22 +44,26 @@ class VirtualMachinesController < ApplicationController
   # POST /virtual_machines
   # POST /virtual_machines.json
   def create
-    @vmconfigs = Vmconfig.all
-    @os_images = OsImage.all
+    
     params[:virtual_machine][:connection_s]="vnc to 217.197.0.127:5901"
     params[:virtual_machine][:user_id] = current_user.id
     @virtual_machine = VirtualMachine.new(params[:virtual_machine])
-    @msg={}
-    @msg[:action] = "START"
-    @msg[:params] = {}
-    @msg[:params][:vm_id] = params[:virtual_machine][:name]
-    @msg[:params][:user_id] = params[:virtual_machine][:user_id].to_s
-    @msg[:params][:image] = params[:virtual_machine][:image]
-    @msg[:params][:memory] = "512"
+
     
     respond_to do |format|
       if @virtual_machine.save
-      VirtualMachinesController.nameless_exchange.publish @msg.to_json,:key => "ui.to.mng"                                        
+        
+        @vmconfig = Vmconfig.find((params[:virtual_machine][:vmconfig_id]))
+        @os_image = OsImage.find(params[:virtual_machine][:os_image_id])
+        @msg={}
+        @msg[:action] = "START"
+        @msg[:params] = {}
+        @msg[:params][:vm_id] = params[:virtual_machine][:name]
+        @msg[:params][:user_id] = params[:virtual_machine][:user_id].to_s
+        @msg[:params][:image] = @os_image.file
+        @msg[:params][:memory] = @vmconfig.memory
+        VirtualMachinesController.nameless_exchange.publish @msg.to_json,:key => "ui.to.mng"                                        
+
         format.html { redirect_to @virtual_machine, notice: 'Virtual machine was successfully created.' }
         format.json { render json: @virtual_machine, status: :created, location: @virtual_machine }
       else
