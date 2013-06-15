@@ -56,11 +56,10 @@ class VirtualMachinesController < ApplicationController
     @msg[:params][:user_id] = params[:virtual_machine][:user_id].to_s
     @msg[:params][:image] = params[:virtual_machine][:image]
     @msg[:params][:memory] = "512"
-
-    VirtualMachinesController.nameless_exchange.publish @msg.to_json,:key => "ui.to.mng"                                        
-
+    
     respond_to do |format|
       if @virtual_machine.save
+      VirtualMachinesController.nameless_exchange.publish @msg.to_json,:key => "ui.to.mng"                                        
         format.html { redirect_to @virtual_machine, notice: 'Virtual machine was successfully created.' }
         format.json { render json: @virtual_machine, status: :created, location: @virtual_machine }
       else
