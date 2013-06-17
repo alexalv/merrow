@@ -19,7 +19,6 @@ Daemons.run_proc('mng_recv', {}) do
     exchange = channel.direct("")
 
     queue.subscribe do |payload|
-      puts "Message received! #{payload}"
       #begin
         obj = JSON.parse(payload)
         puts "Message decoded! #{obj}"
@@ -69,6 +68,9 @@ Daemons.run_proc('mng_recv', {}) do
             @virtual_machine = VirtualMachine..where("uuid = ?", obj['params']['uuid'])
             @virtual_machine.update_attributes({:state => "running"})
           end
+        when 'ERROR'
+          puts "error recieved"
+          # Here we should handle an error if possible and inform user
         else
           puts "another msg"
         end
