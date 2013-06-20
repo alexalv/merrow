@@ -56,7 +56,9 @@ Daemons.run_proc('mng_recv', {}) do
         when 'SAVED'
           ActiveRecord::Base.connection_pool.with_connection do
             @virtual_machine = VirtualMachine.where("uuid = ?", obj['params']['uuid'])
-            @virtual_machine.update_attributes({:state => "saved", :filename =>obj['params']['filename']})
+            @virtual_machine.each do |vm|
+              vm.update_attributes({:state => "saved", :filename =>obj['params']['filename']})
+            end
           end
         when 'STOPPED'
           ActiveRecord::Base.connection_pool.with_connection do
@@ -65,8 +67,10 @@ Daemons.run_proc('mng_recv', {}) do
           end
         when 'SAVESTARTED'
           ActiveRecord::Base.connection_pool.with_connection do
-            @virtual_machine = VirtualMachine..where("uuid = ?", obj['params']['uuid'])
-            @virtual_machine.update_attributes({:state => "running"})
+            @virtual_machine = VirtualMachine.where("uuid = ?", obj['params']['uuid'])
+            @virtual_machine.each do |vm|
+              vm.update_attributes({:state => "running"})
+            end
           end
         when 'ERROR'
           puts "error recieved"
